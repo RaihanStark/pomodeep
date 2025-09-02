@@ -6,6 +6,7 @@
 	type Task = { id: number; title: string; type: TaskType; completed: boolean };
 
 	let tasks: Task[] = [];
+	let currentTaskId: number | null = null;
 	let newTaskTitle = '';
 	let newTaskType: TaskType = 'deep';
 
@@ -18,6 +19,7 @@
 
 	function removeTask(id: number) {
 		tasks = tasks.filter((t) => t.id !== id);
+		if (currentTaskId === id) currentTaskId = null;
 	}
 
 	function toggleComplete(id: number) {
@@ -27,6 +29,10 @@
 	function orderedByCompletion(items: Task[]): Task[] {
 		// Incomplete first, then completed; keep stable order otherwise
 		return [...items].sort((a, b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1));
+	}
+
+	function selectTask(id: number) {
+		currentTaskId = id;
 	}
 </script>
 
@@ -56,6 +62,18 @@
 				<Button variant="primary" class="!h-[44px] !px-10" onclick={addTask}>Add</Button>
 			</div>
 
+				<div class="list-title !mt-4">Current task</div>
+				<div class="item" style="grid-column: 1 / -1;">
+					{#if currentTaskId}
+						{#each tasks as t (t.id)}
+							{#if t.id === currentTaskId}
+								<span class="title">{t.title}</span>
+							{/if}
+						{/each}
+					{:else}
+						<span class="title">No task selected</span>
+					{/if}
+				</div>
 			<div class="mt-4 grid gap-4 sm:mt-5 sm:grid-cols-2 sm:gap-6">
 				<div>
 					<div class="list-title">
@@ -82,16 +100,22 @@
 					</div>
 					<ul class="list">
 						{#each orderedByCompletion(tasks.filter((t) => t.type === 'deep')) as t (t.id)}
-							<li class="item" class:completed={t.completed}>
+							<li
+								class="item"
+								class:completed={t.completed}
+								class:selected={currentTaskId === t.id}
+							>
 								<Button
 									class="!h-[32px] !min-h-[32px] !w-[32px] !min-w-[32px] rounded-lg bg-white text-lg text-[#a64646] hover:bg-white"
 									aria-label="toggle complete"
 									aria-pressed={t.completed}
-									onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</Button
+									onclick={(e) => { e.stopPropagation(); toggleComplete(t.id); }}>{t.completed ? '✓' : ''}</Button
 								>
-								<span class="title">{t.title}</span>
+								<button class="title-btn" type="button" aria-label="Select task" onclick={() => selectTask(t.id)}>
+									<span class="title">{t.title}</span>
+								</button>
 								<div class="actions">
-									<Button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</Button>
+									<Button class="x" aria-label="remove" onclick={(e) => { e.stopPropagation(); removeTask(t.id); }}>×</Button>
 								</div>
 							</li>
 						{/each}
@@ -125,16 +149,22 @@
 					</div>
 					<ul class="list">
 						{#each orderedByCompletion(tasks.filter((t) => t.type === 'shallow')) as t (t.id)}
-							<li class="item" class:completed={t.completed}>
+							<li
+								class="item"
+								class:completed={t.completed}
+								class:selected={currentTaskId === t.id}
+							>
 								<Button
 									class="!h-[32px] !min-h-[32px] !w-[32px] !min-w-[32px] rounded-lg bg-white text-lg text-[#a64646] hover:bg-white"
 									aria-label="toggle complete"
 									aria-pressed={t.completed}
-									onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</Button
+									onclick={(e) => { e.stopPropagation(); toggleComplete(t.id); }}>{t.completed ? '✓' : ''}</Button
 								>
-								<span class="title">{t.title}</span>
+								<button class="title-btn" type="button" aria-label="Select task" onclick={() => selectTask(t.id)}>
+									<span class="title">{t.title}</span>
+								</button>
 								<div class="actions">
-									<Button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</Button>
+									<Button class="x" aria-label="remove" onclick={(e) => { e.stopPropagation(); removeTask(t.id); }}>×</Button>
 								</div>
 							</li>
 						{/each}
@@ -186,7 +216,11 @@
 		color: #fff;
 		padding: 10px 12px;
 		border-radius: 8px;
+		transition: outline-color .15s ease, outline-width .15s ease, background-color .15s ease;
+		outline: 2px solid transparent;
 	}
+	.item:hover { background: rgba(255, 255, 255, 0.14); }
+	.item.selected { outline-color: #fff; outline-width: 2px; }
 	.item.completed {
 		opacity: 0.5;
 	}
@@ -202,6 +236,15 @@
 		min-width: 0;
 		word-break: break-word;
 		overflow-wrap: anywhere;
+	}
+	.title-btn {
+		flex: 1 1 auto;
+		background: transparent;
+		border: 0;
+		padding: 0;
+		text-align: left;
+		color: inherit;
+		cursor: pointer;
 	}
 	.actions {
 		margin-left: auto;
