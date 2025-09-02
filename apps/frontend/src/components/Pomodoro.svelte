@@ -66,6 +66,7 @@
       {:else}
         <button onclick={stop} class="cta">PAUSE</button>
       {/if}
+      <button onclick={reset} class="cta ml-5">RESET</button>
     </div>
   </div>
 </div>
