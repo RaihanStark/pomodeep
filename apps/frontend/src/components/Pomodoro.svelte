@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { formatSecondsAsMMSS } from '$lib/utils/time';
+  import { Button } from '$lib/components/ui/button';
 
   type Mode = 'pomodoro' | 'short' | 'long';
 
@@ -53,46 +54,34 @@
 <div class="w-full">
   <div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:20px 18px 26px; max-width:640px;">
     <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
-      <button class="tab" class:active-tab={mode==='pomodoro'} onclick={() => setMode('pomodoro')}>Pomodoro</button>
-      <button class="tab" class:active-tab={mode==='short'} onclick={() => setMode('short')}>Short Break</button>
-      <button class="tab" class:active-tab={mode==='long'} onclick={() => setMode('long')}>Long Break</button>
+      <Button variant="tab" class={`${mode==='pomodoro' ? 'active-tab' : ''}`} onclick={() => setMode('pomodoro')}>Pomodoro</Button>
+      <Button variant="tab" class={`${mode==='short' ? 'active-tab' : ''}`} onclick={() => setMode('short')}>Short Break</Button>
+      <Button variant="tab" class={`${mode==='long' ? 'active-tab' : ''}`} onclick={() => setMode('long')}>Long Break</Button>
     </div>
 
     <div class="timer">{formatSecondsAsMMSS(remaining)}</div>
 
     <div class="mt-6 sm:mt-7 flex justify-center">
       {#if !running}
-        <button onclick={start} class="cta">START</button>
+        <Button onclick={start} variant="primary" class="px-10 py-6">START</Button>
       {:else}
-        <button onclick={stop} class="cta">PAUSE</button>
+        <Button onclick={stop} variant="primary" class="px-10 py-6">PAUSE</Button>
       {/if}
-      <button onclick={reset} class="cta ml-5">RESET</button>
+      <Button onclick={reset} variant="secondary" class="ml-5 px-10 py-6">RESET</Button>
     </div>
   </div>
 </div>
 
 <style>
-  .tab { background-color:#b65454; color:rgba(255,255,255,.9); padding:6px 10px; border-radius:6px; transition:background-color .2s ease, transform .12s ease; white-space:nowrap; }
-  .tab:hover { background-color:#ad4f4f; }
-  .tab:active { transform:translateY(1px); }
-  .active-tab { background-color:#a64646 !important; }
+  :global(.active-tab) { background-color:#a64646 !important; }
 
   .timer { color:#fff; text-align:center; font-weight:800; font-size:clamp(56px, 20vw, 120px); line-height:1; letter-spacing:2px; margin-top:10px; user-select:none; transition:transform .14s ease; }
 
-  .cta { background:#fff; color:#a64646; font-weight:700; letter-spacing:1px; padding:12px 40px; border-radius:8px; box-shadow:0 3px 0 #c84f4f; transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease; }
-  .cta:hover { opacity:.95; }
-  .cta:active { transform:translateY(2px); box-shadow:0 1px 0 #c84f4f; }
-
-  @media (min-width: 380px) {
-    .cta { padding:13px 46px; }
-  }
 
   @media (min-width: 640px) {
     .timer { margin-top:12px; }
-    .cta { padding:14px 52px; }
   }
 
-  /* tasks styles moved to Tasks.svelte */
 </style>
 
 

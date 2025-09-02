@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Button } from '$lib/components/ui/button';
   type TaskType = 'deep' | 'shallow';
   type Task = { id: number; title: string; type: TaskType; completed: boolean };
 
@@ -35,7 +36,7 @@
         <option value="deep">Deep</option>
         <option value="shallow">Shallow</option>
       </select>
-      <button class="task-add" onclick={addTask}>Add</button>
+      <Button class="task-add" onclick={addTask}>Add</Button>
     </div>
 
     <div class="grid gap-4 sm:gap-6 mt-4 sm:mt-5 sm:grid-cols-2">
@@ -44,10 +45,10 @@
         <ul class="list">
           {#each orderedByCompletion(tasks.filter((t) => t.type === 'deep')) as t (t.id)}
             <li class="item" class:completed={t.completed}>
-              <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
+              <Button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</Button>
               <span class="title">{t.title}</span>
               <div class="actions">
-                <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
+                <Button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</Button>
               </div>
             </li>
           {/each}
@@ -61,10 +62,10 @@
         <ul class="list">
           {#each orderedByCompletion(tasks.filter((t) => t.type === 'shallow')) as t (t.id)}
             <li class="item" class:completed={t.completed}>
-              <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
+              <Button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</Button>
               <span class="title">{t.title}</span>
               <div class="actions">
-                <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
+                <Button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</Button>
               </div>
             </li>
           {/each}
@@ -80,7 +81,7 @@
 <style>
   .task-input { flex:1 1 160px; min-width:0; background:#fff; color:#5b2727; padding:10px 12px; border-radius:8px; outline:none; border:0; }
   .task-select { background:#a64646; color:#fff; padding:10px 10px; border-radius:8px; border:0; }
-  .task-add { background:#fff; color:#a64646; font-weight:700; padding:10px 16px; border-radius:8px; box-shadow:0 2px 0 #c84f4f; }
+  :global(.task-add) { background:#fff; color:#a64646; font-weight:700; padding:10px 16px; border-radius:8px; box-shadow:0 2px 0 #c84f4f; }
 
   .list-title { color:#fff; font-weight:700; margin-bottom:8px; }
   .list { display:flex; flex-direction:column; gap:8px; }
@@ -90,8 +91,8 @@
   .item.empty { opacity:.7; justify-content:center; }
   .title { flex:1 1 auto; min-width:0; word-break:break-word; overflow-wrap:anywhere; }
   .actions { margin-left:auto; display:flex; align-items:center; gap:8px; }
-  .check { width:26px; height:26px; min-width:26px; min-height:26px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#a64646; border-radius:6px; font-weight:800; box-shadow:0 2px 0 #c84f4f; }
-  .x { background:transparent; color:#fff; opacity:.8; font-size:18px; line-height:1; padding:0 4px; }
+  :global(.check) { width:26px; height:26px; min-width:26px; min-height:26px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#a64646; border-radius:6px; font-weight:800; box-shadow:0 2px 0 #c84f4f; }
+  :global(.x) { background:transparent; color:#fff; opacity:.8; font-size:18px; line-height:1; padding:0 4px; }
 </style>
 
 
