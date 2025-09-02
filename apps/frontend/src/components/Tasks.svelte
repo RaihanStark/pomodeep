@@ -1,6 +1,6 @@
 <script lang="ts">
   type TaskType = 'deep' | 'shallow';
-  type Task = { id: number; title: string; type: TaskType };
+  type Task = { id: number; title: string; type: TaskType; completed: boolean };
 
   let tasks: Task[] = [];
   let newTaskTitle = '';
@@ -9,34 +9,46 @@
   function addTask() {
     const title = newTaskTitle.trim();
     if (!title) return;
-    tasks = [...tasks, { id: Date.now(), title, type: newTaskType }];
+    tasks = [...tasks, { id: Date.now(), title, type: newTaskType, completed: false }];
     newTaskTitle = '';
   }
 
   function removeTask(id: number) {
     tasks = tasks.filter((t) => t.id !== id);
   }
+
+  function toggleComplete(id: number) {
+    tasks = tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
+  }
+
+  function orderedByCompletion(items: Task[]): Task[] {
+    // Incomplete first, then completed; keep stable order otherwise
+    return [...items].sort((a, b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1));
+  }
 </script>
 
 <div class="w-full">
   <div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:18px 18px 22px; max-width:640px;">
     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-      <input class="task-input" placeholder="Brain dump a task..." bind:value={newTaskTitle} on:keydown={(e) => e.key==='Enter' && addTask()} />
+      <input class="task-input" placeholder="Brain dump a task..." bind:value={newTaskTitle} onkeydown={(e) => e.key==='Enter' && addTask()} />
       <select class="task-select" bind:value={newTaskType}>
         <option value="deep">Deep</option>
         <option value="shallow">Shallow</option>
       </select>
-      <button class="task-add" on:click={addTask}>Add</button>
+      <button class="task-add" onclick={addTask}>Add</button>
     </div>
 
     <div class="grid gap-4 sm:gap-6 mt-4 sm:mt-5 sm:grid-cols-2">
       <div>
         <div class="list-title">Deep</div>
         <ul class="list">
-          {#each tasks.filter((t) => t.type === 'deep') as t (t.id)}
-            <li class="item">
+          {#each orderedByCompletion(tasks.filter((t) => t.type === 'deep')) as t (t.id)}
+            <li class="item" class:completed={t.completed}>
+                <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
               <span>{t.title}</span>
-              <button class="x" aria-label="remove" on:click={() => removeTask(t.id)}>×</button>
+              <div class="actions">
+                <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
+              </div>
             </li>
           {/each}
           {#if tasks.filter((t) => t.type === 'deep').length === 0}
@@ -47,10 +59,13 @@
       <div>
         <div class="list-title">Shallow</div>
         <ul class="list">
-          {#each tasks.filter((t) => t.type === 'shallow') as t (t.id)}
-            <li class="item">
+          {#each orderedByCompletion(tasks.filter((t) => t.type === 'shallow')) as t (t.id)}
+            <li class="item" class:completed={t.completed}>
+              <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
               <span>{t.title}</span>
-              <button class="x" aria-label="remove" on:click={() => removeTask(t.id)}>×</button>
+              <div class="actions">
+                <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
+              </div>
             </li>
           {/each}
           {#if tasks.filter((t) => t.type === 'shallow').length === 0}
@@ -70,7 +85,11 @@
   .list-title { color:#fff; font-weight:700; margin-bottom:8px; }
   .list { display:flex; flex-direction:column; gap:8px; }
   .item { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.1); color:#fff; padding:10px 12px; border-radius:8px; }
+  .item.completed { opacity:.5; }
+  .item.completed span { text-decoration:line-through; }
   .item.empty { opacity:.7; justify-content:center; }
+  .actions { display:flex; align-items:center; gap:8px; }
+  .check { width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#a64646; border-radius:6px; font-weight:800; box-shadow:0 2px 0 #c84f4f; }
   .x { background:transparent; color:#fff; opacity:.8; font-size:18px; line-height:1; padding:0 4px; }
 </style>
 
