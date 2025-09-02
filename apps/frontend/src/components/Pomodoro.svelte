@@ -53,18 +53,18 @@
 <div class="w-full">
   <div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:20px 18px 26px; max-width:640px;">
     <div class="flex flex-wrap justify-center items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
-      <button class="tab" class:active-tab={mode==='pomodoro'} on:click={() => setMode('pomodoro')}>Pomodoro</button>
-      <button class="tab" class:active-tab={mode==='short'} on:click={() => setMode('short')}>Short Break</button>
-      <button class="tab" class:active-tab={mode==='long'} on:click={() => setMode('long')}>Long Break</button>
+      <button class="tab" class:active-tab={mode==='pomodoro'} onclick={() => setMode('pomodoro')}>Pomodoro</button>
+      <button class="tab" class:active-tab={mode==='short'} onclick={() => setMode('short')}>Short Break</button>
+      <button class="tab" class:active-tab={mode==='long'} onclick={() => setMode('long')}>Long Break</button>
     </div>
 
     <div class="timer">{formatSecondsAsMMSS(remaining)}</div>
 
     <div class="mt-6 sm:mt-7 flex justify-center">
       {#if !running}
-        <button on:click={start} class="cta">START</button>
+        <button onclick={start} class="cta">START</button>
       {:else}
-        <button on:click={stop} class="cta">PAUSE</button>
+        <button onclick={stop} class="cta">PAUSE</button>
       {/if}
     </div>
   </div>
@@ -77,7 +77,6 @@
   .active-tab { background-color:#a64646 !important; }
 
   .timer { color:#fff; text-align:center; font-weight:800; font-size:clamp(56px, 20vw, 120px); line-height:1; letter-spacing:2px; margin-top:10px; user-select:none; transition:transform .14s ease; }
-  .pulse { transform:scale(1.02); }
 
   .cta { background:#fff; color:#a64646; font-weight:700; letter-spacing:1px; padding:12px 40px; border-radius:8px; box-shadow:0 3px 0 #c84f4f; transition:transform .12s ease, box-shadow .12s ease, opacity .2s ease; }
   .cta:hover { opacity:.95; }
@@ -91,6 +90,8 @@
     .timer { margin-top:12px; }
     .cta { padding:14px 52px; }
   }
+
+  /* tasks styles moved to Tasks.svelte */
 </style>
 
 
