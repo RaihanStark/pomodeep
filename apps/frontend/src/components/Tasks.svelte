@@ -44,8 +44,8 @@
         <ul class="list">
           {#each orderedByCompletion(tasks.filter((t) => t.type === 'deep')) as t (t.id)}
             <li class="item" class:completed={t.completed}>
-                <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
-              <span>{t.title}</span>
+              <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
+              <span class="title">{t.title}</span>
               <div class="actions">
                 <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
               </div>
@@ -62,7 +62,7 @@
           {#each orderedByCompletion(tasks.filter((t) => t.type === 'shallow')) as t (t.id)}
             <li class="item" class:completed={t.completed}>
               <button class="check" aria-label="toggle complete" aria-pressed={t.completed} onclick={() => toggleComplete(t.id)}>{t.completed ? '✓' : ''}</button>
-              <span>{t.title}</span>
+              <span class="title">{t.title}</span>
               <div class="actions">
                 <button class="x" aria-label="remove" onclick={() => removeTask(t.id)}>×</button>
               </div>
@@ -84,12 +84,13 @@
 
   .list-title { color:#fff; font-weight:700; margin-bottom:8px; }
   .list { display:flex; flex-direction:column; gap:8px; }
-  .item { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,.1); color:#fff; padding:10px 12px; border-radius:8px; }
+  .item { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.1); color:#fff; padding:10px 12px; border-radius:8px; }
   .item.completed { opacity:.5; }
-  .item.completed span { text-decoration:line-through; }
+  .item.completed .title { text-decoration:line-through; }
   .item.empty { opacity:.7; justify-content:center; }
-  .actions { display:flex; align-items:center; gap:8px; }
-  .check { width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#a64646; border-radius:6px; font-weight:800; box-shadow:0 2px 0 #c84f4f; }
+  .title { flex:1 1 auto; min-width:0; word-break:break-word; overflow-wrap:anywhere; }
+  .actions { margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .check { width:26px; height:26px; min-width:26px; min-height:26px; display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#a64646; border-radius:6px; font-weight:800; box-shadow:0 2px 0 #c84f4f; }
   .x { background:transparent; color:#fff; opacity:.8; font-size:18px; line-height:1; padding:0 4px; }
 </style>
 
