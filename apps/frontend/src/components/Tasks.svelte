@@ -38,10 +38,7 @@
 
 <Tooltip.Provider delayDuration={150}>
 	<div class="w-full">
-		<div
-			class="mx-auto rounded-md"
-			style="background-color:#bf5a5a; padding:18px 18px 22px; max-width:640px;"
-		>
+		<div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:18px 18px 22px;">
 			<div class="flex flex-wrap items-center gap-2 sm:gap-3">
 				<input
 					class="task-input"
@@ -62,24 +59,23 @@
 				<Button variant="primary" class="!h-[44px] !px-10" onclick={addTask}>Add</Button>
 			</div>
 
-				<div class="list-title !mt-4">Current task</div>
-				<div class="item" style="grid-column: 1 / -1;">
-					{#if currentTaskId}
-						{#each tasks as t (t.id)}
-							{#if t.id === currentTaskId}
-								<span class="title">{t.title}</span>
-							{/if}
-						{/each}
-					{:else}
-						<span class="title">No task selected</span>
-					{/if}
-				</div>
+			<div class="list-title !mt-4">Current task</div>
+			<div class="item" style="grid-column: 1 / -1;">
+				{#if currentTaskId}
+					{#each tasks as t (t.id)}
+						{#if t.id === currentTaskId}
+							<span class="title">{t.title}</span>
+						{/if}
+					{/each}
+				{:else}
+					<span class="title">No task selected</span>
+				{/if}
+			</div>
 			<div class="mt-4 grid gap-4 sm:mt-5 sm:grid-cols-2 sm:gap-6">
 				<div>
 					<div class="list-title">
 						Deep <Tooltip.Root
-							><Tooltip.Trigger aria-label="Definitions" style="cursor:help;"
-								>ⓘ</Tooltip.Trigger
+							><Tooltip.Trigger aria-label="Definitions" style="cursor:help;">ⓘ</Tooltip.Trigger
 							><Tooltip.Content side="right" sideOffset={8}>
 								<div style="max-width:320px; line-height:1.45;">
 									<div style="font-weight:700; margin-bottom:6px;">🔑 Definitions</div>
@@ -109,13 +105,28 @@
 									class="!h-[32px] !min-h-[32px] !w-[32px] !min-w-[32px] rounded-lg bg-white text-lg text-[#a64646] hover:bg-white"
 									aria-label="toggle complete"
 									aria-pressed={t.completed}
-									onclick={(e) => { e.stopPropagation(); toggleComplete(t.id); }}>{t.completed ? '✓' : ''}</Button
+									onclick={(e) => {
+										e.stopPropagation();
+										toggleComplete(t.id);
+									}}>{t.completed ? '✓' : ''}</Button
 								>
-								<button class="title-btn" type="button" aria-label="Select task" onclick={() => selectTask(t.id)}>
+								<button
+									class="title-btn"
+									type="button"
+									aria-label="Select task"
+									onclick={() => selectTask(t.id)}
+								>
 									<span class="title">{t.title}</span>
 								</button>
 								<div class="actions">
-									<Button class="x" aria-label="remove" onclick={(e) => { e.stopPropagation(); removeTask(t.id); }}>×</Button>
+									<Button
+										class="x"
+										aria-label="remove"
+										onclick={(e) => {
+											e.stopPropagation();
+											removeTask(t.id);
+										}}>×</Button
+									>
 								</div>
 							</li>
 						{/each}
@@ -127,8 +138,7 @@
 				<div>
 					<div class="list-title">
 						Shallow <Tooltip.Root
-							><Tooltip.Trigger aria-label="Definitions" style="cursor:help;"
-								>ⓘ</Tooltip.Trigger
+							><Tooltip.Trigger aria-label="Definitions" style="cursor:help;">ⓘ</Tooltip.Trigger
 							><Tooltip.Content side="right" sideOffset={8}>
 								<div style="max-width:320px; line-height:1.45;">
 									<div style="font-weight:700; margin-bottom:6px;">🔑 Definitions</div>
@@ -158,13 +168,28 @@
 									class="!h-[32px] !min-h-[32px] !w-[32px] !min-w-[32px] rounded-lg bg-white text-lg text-[#a64646] hover:bg-white"
 									aria-label="toggle complete"
 									aria-pressed={t.completed}
-									onclick={(e) => { e.stopPropagation(); toggleComplete(t.id); }}>{t.completed ? '✓' : ''}</Button
+									onclick={(e) => {
+										e.stopPropagation();
+										toggleComplete(t.id);
+									}}>{t.completed ? '✓' : ''}</Button
 								>
-								<button class="title-btn" type="button" aria-label="Select task" onclick={() => selectTask(t.id)}>
+								<button
+									class="title-btn"
+									type="button"
+									aria-label="Select task"
+									onclick={() => selectTask(t.id)}
+								>
 									<span class="title">{t.title}</span>
 								</button>
 								<div class="actions">
-									<Button class="x" aria-label="remove" onclick={(e) => { e.stopPropagation(); removeTask(t.id); }}>×</Button>
+									<Button
+										class="x"
+										aria-label="remove"
+										onclick={(e) => {
+											e.stopPropagation();
+											removeTask(t.id);
+										}}>×</Button
+									>
 								</div>
 							</li>
 						{/each}
@@ -216,11 +241,19 @@
 		color: #fff;
 		padding: 10px 12px;
 		border-radius: 8px;
-		transition: outline-color .15s ease, outline-width .15s ease, background-color .15s ease;
+		transition:
+			outline-color 0.15s ease,
+			outline-width 0.15s ease,
+			background-color 0.15s ease;
 		outline: 2px solid transparent;
 	}
-	.item:hover { background: rgba(255, 255, 255, 0.14); }
-	.item.selected { outline-color: #fff; outline-width: 2px; }
+	.item:hover {
+		background: rgba(255, 255, 255, 0.14);
+	}
+	.item.selected {
+		outline-color: #fff;
+		outline-width: 2px;
+	}
 	.item.completed {
 		opacity: 0.5;
 	}

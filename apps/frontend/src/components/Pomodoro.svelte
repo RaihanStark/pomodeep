@@ -53,10 +53,7 @@
 </script>
 
 <div class="w-full">
-	<div
-		class="mx-auto rounded-md"
-		style="background-color:#bf5a5a; padding:20px 18px 26px; max-width:640px;"
-	>
+	<div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:20px 18px 26px">
 		<div class="mb-4 flex flex-wrap items-center justify-center gap-3 sm:mb-5 sm:gap-4">
 			<Button
 				variant="tab"
