@@ -3,28 +3,51 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import { signInSchema, signUpSchema } from '$lib/utils/validation';
 
 	let email = '';
 	let password = '';
 	let isSignUp = false;
+	let errors: Record<string, string> = {};
 
 	function handleSubmit() {
+		// Clear previous errors
+		errors = {};
+
+		// Validate form data
+		const schema = isSignUp ? signUpSchema : signInSchema;
+		const result = schema.safeParse({ email, password });
+
+		if (!result.success) {
+			// Set validation errors
+			result.error.issues.forEach((issue) => {
+				if (issue.path[0]) {
+					errors[issue.path[0] as string] = issue.message;
+				}
+			});
+			return;
+		}
+
+		// Form is valid, proceed with submission
 		if (isSignUp) {
 			// Handle sign up logic
-			console.log('Sign up:', { email, password });
+			console.log('Sign up:', result.data);
 		} else {
 			// Handle sign in logic
-			console.log('Sign in:', { email, password });
+			console.log('Sign in:', result.data);
 		}
+
 		// Reset form
 		email = '';
 		password = '';
+		errors = {};
 	}
 
 	function toggleMode() {
 		isSignUp = !isSignUp;
 		email = '';
 		password = '';
+		errors = {};
 	}
 </script>
 
@@ -47,7 +70,16 @@
 		<form on:submit|preventDefault={handleSubmit} class="space-y-4">
 			<div class="space-y-2">
 				<Label for="email">Email</Label>
-				<Input id="email" type="email" placeholder="Enter your email" bind:value={email} required />
+				<Input
+					id="email"
+					type="email"
+					placeholder="Enter your email"
+					bind:value={email}
+					class={errors.email ? 'border-red-500' : ''}
+				/>
+				{#if errors.email}
+					<p class="text-sm text-red-500">{errors.email}</p>
+				{/if}
 			</div>
 
 			<div class="space-y-2">
@@ -57,8 +89,11 @@
 					type="password"
 					placeholder="Enter your password"
 					bind:value={password}
-					required
+					class={errors.password ? 'border-red-500' : ''}
 				/>
+				{#if errors.password}
+					<p class="text-sm text-red-500">{errors.password}</p>
+				{/if}
 			</div>
 
 			<Button type="submit" variant="tab" class="w-full">
