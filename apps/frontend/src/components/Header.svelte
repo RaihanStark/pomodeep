@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
+	import SignInDialog from './SignInDialog.svelte';
 </script>
 
 <header class="w-full border-b border-white/20 bg-white/10 backdrop-blur-sm">
@@ -12,7 +12,7 @@
 
 			<!-- Sign in/Register Button -->
 			<div class="flex items-center space-x-2">
-				<Button variant="primary" size="sm">Sign in</Button>
+				<SignInDialog />
 			</div>
 		</div>
 	</div>
