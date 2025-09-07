@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 
+	"github.com/raihanstark/pomodeep/internal/utils"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // Service defines the interface for user business logic
 type Service interface {
 	SignUp(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error)
+	SignIn(ctx context.Context, req *SignInRequest) (*SignInResponse, error)
 }
 
 // service implements Service interface
@@ -22,6 +24,34 @@ func NewService(repo Repository) Service {
 	return &service{
 		repo: repo,
 	}
+}
+
+func (s *service) SignIn(ctx context.Context, req *SignInRequest) (*SignInResponse, error) {
+	user, err := s.repo.GetByEmail(ctx, req.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	if user == nil {
+		return nil, errors.New("user not found")
+	}
+
+	// Compare the password
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err != nil {
+		return nil, errors.New("invalid password")
+	}
+
+	// Generate the token
+	token, err := utils.GenerateToken(user.ID, user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SignInResponse{
+		User:  *user,
+		Token: token,
+	}, nil
 }
 
 // SignUp creates a new user account

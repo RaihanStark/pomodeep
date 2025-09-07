@@ -26,6 +26,16 @@ type CreateUserResponse struct {
 	User User `json:"user"`
 }
 
+type SignInRequest struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=6"`
+}
+
+type SignInResponse struct {
+	User  User   `json:"user"`
+	Token string `json:"token"`
+}
+
 // FromDBUser converts a database user to our model
 func FromDBUser(dbUser db.User) User {
 	return User{

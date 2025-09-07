@@ -56,6 +56,7 @@ func main() {
 	// API routes
 	api := e.Group("/api/v1")
 	api.POST("/auth/signup", userHandler.SignUp)
+	api.POST("/auth/signin", userHandler.SignIn)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))

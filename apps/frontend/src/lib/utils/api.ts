@@ -18,6 +18,21 @@ export interface SignUpResponse {
     };
 }
 
+export interface SignInRequest {
+    email: string;
+    password: string;
+}
+
+export interface SignInResponse {
+    user: {
+        id: number;
+        email: string;
+        created_at: string;
+        updated_at: string;
+    };
+    token: string;
+}
+
 export async function signUp(data: SignUpRequest): Promise<SignUpResponse> {
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: 'POST',
@@ -33,4 +48,38 @@ export async function signUp(data: SignUpRequest): Promise<SignUpResponse> {
     }
 
     return response.json();
+}
+
+export async function signIn(data: SignInRequest): Promise<SignInResponse> {
+    const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        const errorData: ApiError = await response.json();
+        throw new Error(errorData.error || 'Sign in failed');
+    }
+
+    return response.json();
+}
+
+// Token management utilities
+export function setAuthToken(token: string) {
+    localStorage.setItem('auth_token', token);
+}
+
+export function getAuthToken(): string | null {
+    return localStorage.getItem('auth_token');
+}
+
+export function removeAuthToken() {
+    localStorage.removeItem('auth_token');
+}
+
+export function isAuthenticated(): boolean {
+    return getAuthToken() !== null;
 }
