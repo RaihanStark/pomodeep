@@ -10,4 +10,4 @@ frontend-dev:
 	cd apps/frontend && npm run dev
 
 backend-dev:
-	cd apps/backend && go run cmd/main.go
+	cd apps/backend && . ./env.sh && go run cmd/main.go
