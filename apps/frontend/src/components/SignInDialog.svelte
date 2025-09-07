@@ -5,6 +5,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { signInSchema, signUpSchema } from '$lib/utils/validation';
 	import { signUp, signIn, setAuthToken } from '$lib/utils/api';
+	import { authStore } from '$lib/stores/auth';
 
 	let email = '';
 	let password = '';
@@ -70,6 +71,9 @@
 
 			// Store the token
 			setAuthToken(response.token);
+
+			// Update auth store
+			authStore.login(response.user, response.token);
 
 			successMessage = `Welcome back, ${response.user.email}!`;
 
