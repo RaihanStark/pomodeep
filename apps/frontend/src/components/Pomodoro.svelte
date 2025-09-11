@@ -27,6 +27,17 @@
 		const tick = () => {
 			if (remaining <= 0) {
 				stop();
+				switch (mode) {
+					case 'pomodoro':
+						setMode('short');
+						break;
+					case 'short':
+						setMode('pomodoro');
+						break;
+					case 'long':
+						setMode('pomodoro');
+						break;
+				}
 				return;
 			}
 			remaining -= 1;
