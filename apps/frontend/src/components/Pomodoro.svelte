@@ -27,6 +27,7 @@
 		const tick = () => {
 			if (remaining <= 0) {
 				stop();
+				done();
 				switch (mode) {
 					case 'pomodoro':
 						setMode('short');
@@ -44,6 +45,13 @@
 		};
 		// run first tick after 1s so initial display stays intact
 		intervalId = window.setInterval(tick, 1000);
+	}
+
+	function done() {
+		if (typeof window !== 'undefined') {
+			const audio = new Audio('/sounds/done.mp3');
+			audio.play();
+		}
 	}
 
 	function stop() {
