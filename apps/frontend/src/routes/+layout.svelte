@@ -17,7 +17,7 @@
 		</div>
 	</div>
 	<div class="flex flex-1 items-start justify-center">
-		<div class="w-full max-w-3xl px-4 pt-8 sm:px-6 md:px-8 md:pt-12">
+		<div class="w-full max-w-3xl px-4 pt-6 sm:px-6 md:px-8">
 			{@render children?.()}
 		</div>
 	</div>
