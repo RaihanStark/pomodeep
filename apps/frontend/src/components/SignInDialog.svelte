@@ -162,7 +162,7 @@
 			{/if}
 
 			<Dialog.Footer>
-				<Button type="submit" disabled={isLoading} class="w-full">
+				<Button type="submit" disabled={isLoading} class="w-full" variant="tab">
 					{isLoading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
 				</Button>
 			</Dialog.Footer>
