@@ -7,7 +7,7 @@ help:
 	@echo "  backend-dev       - Start backend development server"
 
 frontend-dev:
-	cd apps/frontend && npm run dev
+	cd apps/frontend && npm run dev 
 
 backend-dev:
 	cd apps/backend && . ./env.sh && go run cmd/main.go
