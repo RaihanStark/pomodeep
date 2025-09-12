@@ -8,6 +8,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>PomoDeep</title>
 </svelte:head>
 
 <div class="flex min-h-screen w-full flex-col" style="background-color:#bc5151;">

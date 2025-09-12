@@ -13,7 +13,7 @@
 		<div class="flex items-center justify-between">
 			<!-- Logo/App Name -->
 			<div class="flex items-center space-x-2">
-				<h1 class="text-2xl font-bold text-white">PomoApp</h1>
+				<h1 class="text-2xl font-bold text-white">PomoDeep</h1>
 			</div>
 
 			<!-- Sign in/Register Button or Logout -->
