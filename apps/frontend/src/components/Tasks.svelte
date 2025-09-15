@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
 	import * as Select from '$lib/components/ui/select/index';
 	import * as Tooltip from '$lib/components/ui/tooltip/index';
 	type TaskType = 'deep' | 'shallow';
@@ -9,12 +12,20 @@
 	let currentTaskId: number | null = null;
 	let newTaskTitle = '';
 	let newTaskType: TaskType = 'deep';
+	let isCreateOpen = false;
 
 	function addTask() {
 		const title = newTaskTitle.trim();
 		if (!title) return;
 		tasks = [...tasks, { id: Date.now(), title, type: newTaskType, completed: false }];
 		newTaskTitle = '';
+	}
+
+	function handleCreateTask() {
+		const title = newTaskTitle.trim();
+		if (!title) return;
+		addTask();
+		isCreateOpen = false;
 	}
 
 	function removeTask(id: number) {
@@ -40,23 +51,42 @@
 	<div class="w-full">
 		<div class="mx-auto rounded-md" style="background-color:#bf5a5a; padding:18px 18px 22px;">
 			<div class="flex flex-wrap items-center gap-2 sm:gap-3">
-				<input
-					class="task-input"
-					placeholder="Brain dump a task..."
-					bind:value={newTaskTitle}
-					onkeydown={(e) => e.key === 'Enter' && addTask()}
-				/>
-
-				<Select.Root type="single" bind:value={newTaskType}>
-					<Select.Trigger class="!h-[44px] border-none bg-[#a64646] capitalize text-white"
-						>{newTaskType}</Select.Trigger
-					>
-					<Select.Content>
-						<Select.Item value="deep">Deep</Select.Item>
-						<Select.Item value="shallow">Shallow</Select.Item>
-					</Select.Content>
-				</Select.Root>
-				<Button variant="primary" class="!h-[44px] !px-10" onclick={addTask}>Add</Button>
+				<Dialog.Root bind:open={isCreateOpen}>
+					<Dialog.Trigger class="w-full">
+						<Button variant="primary" class="!h-[44px] !px-10 !w-full">Add task</Button>
+					</Dialog.Trigger>
+					<Dialog.Content class="sm:max-w-[425px]">
+						<Dialog.Header>
+							<Dialog.Title>Create task</Dialog.Title>
+							<Dialog.Description>Enter details for your new task</Dialog.Description>
+						</Dialog.Header>
+						<div class="space-y-4">
+							<div class="space-y-2">
+								<Label for="task-title">Title</Label>
+								<Input
+									id="task-title"
+									placeholder="Brain dump a task..."
+									bind:value={newTaskTitle}
+								/>
+							</div>
+							<div class="space-y-2">
+								<Label>Type</Label>
+								<Select.Root type="single" bind:value={newTaskType}>
+									<Select.Trigger class="!h-[44px] border-none bg-[#a64646] capitalize text-white w-full"
+										>{newTaskType}</Select.Trigger
+									>
+									<Select.Content>
+										<Select.Item value="deep">Deep</Select.Item>
+										<Select.Item value="shallow">Shallow</Select.Item>
+									</Select.Content>
+								</Select.Root>
+							</div>
+							<Dialog.Footer>
+								<Button class="w-full" variant="tab" onclick={handleCreateTask}>Add task</Button>
+							</Dialog.Footer>
+						</div>
+					</Dialog.Content>
+				</Dialog.Root>
 			</div>
 
 			<div class="list-title !mt-4">Current task</div>
@@ -204,16 +234,7 @@
 </Tooltip.Provider>
 
 <style>
-	.task-input {
-		flex: 1 1 160px;
-		min-width: 0;
-		background: #fff;
-		color: #5b2727;
-		padding: 10px 12px;
-		border-radius: 8px;
-		outline: none;
-		border: 0;
-	}
+
 	:global(.task-add) {
 		background: #fff;
 		color: #a64646;
