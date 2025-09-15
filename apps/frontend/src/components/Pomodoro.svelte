@@ -68,6 +68,14 @@
 		remaining = MODE_TO_SECONDS[mode];
 	}
 
+	function pause() {
+		running = false;
+		if (intervalId !== null) {
+			clearInterval(intervalId);
+			intervalId = null;
+		}
+	}
+
 	onDestroy(() => stop());
 </script>
 
@@ -97,7 +105,7 @@
 			{#if !running}
 				<Button onclick={start} variant="primary" class="px-10 py-6">START</Button>
 			{:else}
-				<Button onclick={stop} variant="primary" class="px-10 py-6">PAUSE</Button>
+				<Button onclick={pause} variant="primary" class="px-10 py-6">PAUSE</Button>
 			{/if}
 			<Button onclick={reset} variant="secondary" class="ml-5 px-10 py-6">RESET</Button>
 		</div>
